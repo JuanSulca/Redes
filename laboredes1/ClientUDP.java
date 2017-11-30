@@ -25,18 +25,25 @@ public class ClientUDP {
      * @param args the command line arguments
      */
     
-    private static final int SERVER_PORT = 6000;
+    private static final int SERVER_PORT = 6000; //Define el puerto del servido para la comunicacion UDP
     
     public static void main(String[] args) throws IOException{
+        //Crea una pantalla para ingresar la direccion IP y almacenarlo como un string
         String serverAddress = JOptionPane.showInputDialog("Enter IP Address of a machine that is\n" + "running the date service on port " + SERVER_PORT + ":");
         //send a packet(request)
         DatagramSocket clientSocket = new DatagramSocket();
+        //combierte la direccion ip del servidor en un array de bytes
         byte bufferSend[] = serverAddress.getBytes();
+        //se empaqueta la direccion del servidor para ser enviada como un datagrama
         DatagramPacket sendPacket = new DatagramPacket(bufferSend, bufferSend.length, InetAddress.getByName(serverAddress), SERVER_PORT);
+        //envio del datagrama
         clientSocket.send(sendPacket);
         //Recive packet
-        byte bufferReceive[] = new byte[128];
-        DatagramPacket receivePacket = new DatagramPacket(bufferSend, bufferSend.length);
+        //se crea un array de bytes para el mensaje a recivir
+        byte bufferReceive[] = new byte[256];
+        //se crea un datagrama para almacenar los datos de recepcion
+        DatagramPacket receivePacket = new DatagramPacket(bufferReceive, bufferReceive.length);
+        //Se recive la respuesta del servidor
         clientSocket.receive(receivePacket);
         
         //transform bytes into string
